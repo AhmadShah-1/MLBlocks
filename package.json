@@ -1,0 +1,57 @@
+{
+  "name": "mlblocks",
+  "displayName": "MLBlocks",
+  "description": "Visual ML block canvas for assembling Python ML projects.",
+  "version": "0.0.1",
+  "publisher": "ahmad",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:mlblocks.openCanvas",
+    "onCommand:mlblocks.convert",
+    "onCommand:mlblocks.run",
+    "onCommand:mlblocks.debug",
+    "onCommand:mlblocks.stop"
+  ],
+  "main": "./dist/extension/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mlblocks.openCanvas",
+        "title": "MLBlocks: Open Canvas"
+      },
+      {
+        "command": "mlblocks.convert",
+        "title": "MLBlocks: Convert Project"
+      },
+      {
+        "command": "mlblocks.run",
+        "title": "MLBlocks: Run Project"
+      },
+      {
+        "command": "mlblocks.debug",
+        "title": "MLBlocks: Debug Project"
+      },
+      {
+        "command": "mlblocks.stop",
+        "title": "MLBlocks: Stop Execution"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build:webview": "npm --prefix src/webview/app run build",
+    "build": "npm run compile && npm run build:webview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  }
+}
+

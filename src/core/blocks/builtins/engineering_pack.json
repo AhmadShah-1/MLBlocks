@@ -1,0 +1,34 @@
+{
+  "packId": "engineering_lite",
+  "name": "Engineering Lite Pack",
+  "categories": [
+    {
+      "id": "scaffold",
+      "name": "Scaffolding",
+      "blocks": [
+        {
+          "blockId": "argparse_config",
+          "name": "Argparse config skeleton",
+          "category": "Scaffolding",
+          "defaultCode": "import argparse\n\ndef parse_args():\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"--epochs\", type=int, default=5)\n    parser.add_argument(\"--batch_size\", type=int, default=32)\n    return parser.parse_args()\n\nargs = parse_args()\n",
+          "defaultOutputBadge": "argparse.Namespace"
+        },
+        {
+          "blockId": "logging_setup",
+          "name": "Logging setup",
+          "category": "Scaffolding",
+          "defaultCode": "import logging\n\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(\"mlblocks\")\nlogger.info(\"Logger initialized\")\n",
+          "defaultOutputBadge": "logging.Logger"
+        },
+        {
+          "blockId": "project_paths",
+          "name": "Project constants / paths",
+          "category": "Scaffolding",
+          "defaultCode": "from pathlib import Path\n\nROOT = Path(__file__).resolve().parent\nDATA_DIR = ROOT / \"data\"\nCHECKPOINTS_DIR = ROOT / \"checkpoints\"\nCHECKPOINTS_DIR.mkdir(exist_ok=True)\n",
+          "defaultOutputBadge": "pathlib.Path"
+        }
+      ]
+    }
+  ]
+}
+

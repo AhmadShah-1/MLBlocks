@@ -1,0 +1,7 @@
+**/src/webview/app/node_modules/**
+**/src/webview/app/dist/**
+**/src/webview/app/.vite/**
+**/.DS_Store
+**/node_modules/**
+**/dist/**
+
