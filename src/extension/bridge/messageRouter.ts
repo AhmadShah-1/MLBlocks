@@ -7,7 +7,7 @@ import { runProject } from "../commands/runProject";
 import { debugProject } from "../commands/debugProject";
 import { stopExecution } from "../commands/stopExecution";
 import { findNodeById } from "../storage/projectUtils";
-import { runSingleBlock } from "../runner/blockRunner";
+import { runBlocksUpTo } from "../runner/blockRunner";
 
 export function registerMessageRouter(panel: vscode.WebviewPanel, state: ExtensionState) {
   panel.webview.onDidReceiveMessage(async (raw) => {
@@ -58,7 +58,8 @@ async function handleMessage(
         vscode.window.showWarningMessage("Block not found.");
         return;
       }
-      await runSingleBlock(node, panel.webview, state);
+      // Run all blocks up to and including this one to preserve variable state
+      await runBlocksUpTo(node.id, project, panel.webview, state);
       break;
     }
     default:

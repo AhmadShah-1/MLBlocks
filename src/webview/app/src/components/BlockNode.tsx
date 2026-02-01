@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useCallback } from "react";
 import { Handle, Position } from "reactflow";
 import type { BlockNode as BlockNodeType } from "../types";
 import { useProjectStore } from "../state/projectStore";
@@ -14,7 +14,11 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
   const updateNode = useProjectStore((state) => state.updateNode);
   const removeNode = useProjectStore((state) => state.removeNode);
   const clearNodeOutput = useProjectStore((state) => state.clearNodeOutput);
-  const [showOutput, setShowOutput] = useState(false);
+  const [showOutput, setShowOutput] = useState(true);
+  const [outputSize, setOutputSize] = useState({ width: 0, height: 150 });
+  const resizeRef = useRef<HTMLDivElement>(null);
+  const isResizing = useRef(false);
+  const resizeStart = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
   // Calculate line count for dynamic editor height
   const lineCount = useMemo(() => {
@@ -24,8 +28,45 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
 
   const hasOutput = node.output && (node.output.stdout || node.output.stderr || node.output.images.length > 0);
 
+  // Resize handlers
+  const handleResizeStart = useCallback((e: React.MouseEvent, direction: 'vertical' | 'horizontal' | 'both') => {
+    e.preventDefault();
+    e.stopPropagation();
+    isResizing.current = true;
+    resizeStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+      width: outputSize.width || (resizeRef.current?.offsetWidth || 300),
+      height: outputSize.height
+    };
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      if (!isResizing.current) return;
+      
+      const deltaX = moveEvent.clientX - resizeStart.current.x;
+      const deltaY = moveEvent.clientY - resizeStart.current.y;
+
+      setOutputSize((prev) => ({
+        width: direction !== 'vertical' ? Math.max(200, resizeStart.current.width + deltaX) : prev.width,
+        height: direction !== 'horizontal' ? Math.max(50, resizeStart.current.height + deltaY) : prev.height
+      }));
+    };
+
+    const handleMouseUp = () => {
+      isResizing.current = false;
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [outputSize.width, outputSize.height]);
+
   return (
-    <div className={`block-node ${node.ui.collapsed ? "collapsed" : ""}`}>
+    <div 
+      className={`block-node ${node.ui.collapsed ? "collapsed" : ""}`}
+      style={outputSize.width > 0 ? { width: outputSize.width } : undefined}
+    >
       {/* Input handle - green */}
       <Handle 
         type="target" 
@@ -35,6 +76,12 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
       
       {/* Header is the drag handle */}
       <div className="block-header">
+        {/* Drag grip */}
+        <div className="block-drag-grip" title="Drag to move">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         <input
           className="block-title nodrag"
           value={node.title}
@@ -75,7 +122,7 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
           
           {/* Output Panel */}
           {hasOutput && (
-            <div className="block-output-section">
+            <div className="block-output-section" ref={resizeRef}>
               <div className="block-output-header">
                 <button 
                   className="output-toggle"
@@ -91,7 +138,13 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
                 </button>
               </div>
               {showOutput && (
-                <div className="block-output-panel">
+                <div 
+                  className="block-output-panel"
+                  style={{ 
+                    height: outputSize.height,
+                    maxHeight: 'none'
+                  }}
+                >
                   {node.output?.stdout && (
                     <pre>{node.output.stdout}</pre>
                   )}
@@ -106,6 +159,22 @@ const BlockNode: React.FC<BlockNodeProps> = ({ data }) => {
                       className="output-image"
                     />
                   ))}
+                  {/* Resize handles */}
+                  <div 
+                    className="output-resize-handle output-resize-vertical"
+                    onMouseDown={(e) => handleResizeStart(e, 'vertical')}
+                    title="Drag to resize vertically"
+                  />
+                  <div 
+                    className="output-resize-handle output-resize-horizontal"
+                    onMouseDown={(e) => handleResizeStart(e, 'horizontal')}
+                    title="Drag to resize horizontally"
+                  />
+                  <div 
+                    className="output-resize-handle output-resize-corner"
+                    onMouseDown={(e) => handleResizeStart(e, 'both')}
+                    title="Drag to resize"
+                  />
                 </div>
               )}
             </div>

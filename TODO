@@ -1,0 +1,11 @@
+1. It is difficult to grab the blocks, can you create a slight raised block on the top left, that the user can easily grab and drag
+
+2. Once the user minimizes either the Exceution Order or the Block Palette, they text just get squished horizontally, instead place the text vertically, and ensure there is a button to expand it as well as there currently is not one
+
+3. The blocks are still teleporting whne the user grabs and move it to someplace else, it should be actively following the users cursor while grabbed, and upon release it should be placed 
+
+4. Also is it possible, that when a user clicks run a certain block, all previous blocks are also run as well, in the event there are variables from the previous blocks that are needed (AN IMAGE IS PROVIDED TO SHOW MY ISSUE)
+
+5. Also when i paste content in a block, it instead always pastes it in the last block, rather than where my cursor is placed within a different block
+
+6. Also allow the user the ability to resize the size of Output (sometimes the image in the terminal output is far too large and you only see a small section), do not automatically resize, how it is already done is perfectly fine, however let the user extend the size of the output vertically and horizontally, the block should follow in expanding horizontally only (meaning the code (10 lines) and the title, etc stay the same)

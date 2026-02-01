@@ -77,16 +77,22 @@ const CanvasInner: React.FC<CanvasProps> = ({ project, focusNodeId }) => {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
 
+  // Track dragging nodes locally to avoid state update lag
+  const [draggingPositions, setDraggingPositions] = useState<Map<string, { x: number; y: number }>>(new Map());
+
   const nodes = useMemo<Node[]>(() => {
-    return project.nodes.map((node) => ({
-      id: node.id,
-      type: "codeBlock",
-      position: { x: node.ui.x, y: node.ui.y },
-      data: { node },
-      selected: node.id === selectedNodeId,
-      dragHandle: ".block-header"
-    }));
-  }, [project.nodes, selectedNodeId]);
+    return project.nodes.map((node) => {
+      const dragPos = draggingPositions.get(node.id);
+      return {
+        id: node.id,
+        type: "codeBlock",
+        position: dragPos || { x: node.ui.x, y: node.ui.y },
+        data: { node },
+        selected: node.id === selectedNodeId,
+        dragHandle: ".block-header"
+      };
+    });
+  }, [project.nodes, selectedNodeId, draggingPositions]);
 
   const edges = useMemo<Edge[]>(() => {
     return project.edges.map((edge) => ({
@@ -199,7 +205,23 @@ const CanvasInner: React.FC<CanvasProps> = ({ project, focusNodeId }) => {
         nodeTypes={nodeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
         onConnect={onConnect}
-        onNodeDragStop={(_, node) => setNodePosition(node.id, node.position.x, node.position.y)}
+        onNodeDrag={(_, node) => {
+          setDraggingPositions((prev) => {
+            const next = new Map(prev);
+            next.set(node.id, node.position);
+            return next;
+          });
+        }}
+        onNodeDragStop={(_, node) => {
+          // Persist to store
+          setNodePosition(node.id, node.position.x, node.position.y);
+          // Clear dragging state
+          setDraggingPositions((prev) => {
+            const next = new Map(prev);
+            next.delete(node.id);
+            return next;
+          });
+        }}
         onEdgesDelete={(edgesToDelete) => edgesToDelete.forEach((edge) => removeEdge(edge.id))}
         onNodeClick={(_, node) => {
           setSelectedNodeId(node.id);

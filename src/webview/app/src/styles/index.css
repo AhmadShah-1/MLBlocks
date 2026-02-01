@@ -140,6 +140,8 @@ body,
 .order-list.collapsed {
   padding: 12px 8px;
   overflow: hidden;
+  width: 40px !important;
+  min-width: 40px !important;
 }
 
 .palette.collapsed .palette-search,
@@ -148,6 +150,27 @@ body,
 .palette.collapsed .palette-back,
 .order-list.collapsed .order-content {
   display: none;
+}
+
+.palette.collapsed .panel-header,
+.order-list.collapsed .panel-header {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.palette.collapsed .panel-header h3,
+.order-list.collapsed .panel-header h3 {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.palette.collapsed .panel-toggle,
+.order-list.collapsed .panel-toggle {
+  order: -1;
 }
 
 .order-list {
@@ -371,7 +394,6 @@ body,
 
 .block-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 8px;
   cursor: grab;
@@ -379,6 +401,35 @@ body,
 
 .block-header:active {
   cursor: grabbing;
+}
+
+/* Drag grip handle */
+.block-drag-grip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 6px;
+  cursor: grab;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  transition: background 0.15s ease;
+}
+
+.block-drag-grip:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.block-drag-grip:active {
+  cursor: grabbing;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.block-drag-grip span {
+  display: block;
+  width: 12px;
+  height: 2px;
+  background: var(--mlb-text-secondary);
+  border-radius: 1px;
 }
 
 .block-title {
@@ -501,8 +552,9 @@ body,
 .block-output-panel {
   padding: 8px;
   background: var(--vscode-terminal-background, #1e1e1e);
-  max-height: 150px;
+  min-height: 50px;
   overflow: auto;
+  position: relative;
 }
 
 .block-output-panel pre {
@@ -522,6 +574,64 @@ body,
   max-width: 100%;
   border-radius: 4px;
   margin-top: 8px;
+}
+
+/* Resize handles for output panel */
+.output-resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+}
+
+.output-resize-vertical {
+  bottom: 0;
+  left: 0;
+  right: 16px;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.output-resize-vertical:hover,
+.output-resize-vertical:active {
+  background: linear-gradient(to top, rgba(240, 180, 91, 0.5), transparent);
+}
+
+.output-resize-horizontal {
+  top: 0;
+  right: 0;
+  bottom: 16px;
+  width: 8px;
+  cursor: ew-resize;
+}
+
+.output-resize-horizontal:hover,
+.output-resize-horizontal:active {
+  background: linear-gradient(to left, rgba(240, 180, 91, 0.5), transparent);
+}
+
+.output-resize-corner {
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+}
+
+.output-resize-corner:hover,
+.output-resize-corner:active {
+  background: rgba(240, 180, 91, 0.5);
+  border-radius: 4px 0 0 0;
+}
+
+.output-resize-corner::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--mlb-text-muted);
+  border-bottom: 2px solid var(--mlb-text-muted);
 }
 
 /* Colored Handles (Ports) */
