@@ -18,9 +18,9 @@ export function isWebviewMessage(value: unknown): value is WebviewToExtensionMes
     case "STOP_REQUEST":
       return true;
     case "OPEN_BLOCK_IN_EDITOR":
+    case "RUN_BLOCK_REQUEST":
       return typeof message.payload === "object" && message.payload !== null;
     default:
       return false;
   }
 }
-

@@ -28,3 +28,6 @@ export function requestOpenBlock(nodeId: string) {
   getVsCodeApi().postMessage({ type: "OPEN_BLOCK_IN_EDITOR", payload: { nodeId } });
 }
 
+export function requestRunBlock(nodeId: string) {
+  getVsCodeApi().postMessage({ type: "RUN_BLOCK_REQUEST", payload: { nodeId } });
+}

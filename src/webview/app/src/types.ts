@@ -2,6 +2,13 @@ export type BlockSource =
   | { kind: "builtin"; packId: string; blockId: string }
   | { kind: "custom" };
 
+export interface BlockOutput {
+  stdout: string;
+  stderr: string;
+  images: string[]; // base64 encoded images
+  timestamp: number;
+}
+
 export interface BlockNode {
   id: string;
   type: "codeBlock";
@@ -14,6 +21,7 @@ export interface BlockNode {
     y: number;
     collapsed: boolean;
   };
+  output?: BlockOutput;
 }
 
 export interface ControlEdge {
@@ -48,15 +56,22 @@ export interface BlockDefinition {
   blockId: string;
   name: string;
   category: string;
+  section?: string;
   defaultCode: string;
   defaultOutputBadge: string;
   packId?: string;
 }
 
-export interface BlockCategory {
+export interface BlockSection {
   id: string;
   name: string;
   blocks: BlockDefinition[];
+}
+
+export interface BlockCategory {
+  id: string;
+  name: string;
+  sections: BlockSection[];
 }
 
 export interface BlockPack {
@@ -64,4 +79,3 @@ export interface BlockPack {
   name: string;
   categories: BlockCategory[];
 }
-

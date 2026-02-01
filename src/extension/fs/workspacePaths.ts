@@ -14,7 +14,6 @@ export function getMlblocksDir(root: string): string {
 }
 
 export function getGeneratedOutputDir(root: string): string {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-  return path.join(root, "mlblocks_generated", timestamp);
+  // Single output folder that gets overwritten each time
+  return path.join(root, "mlblocks_output");
 }
-

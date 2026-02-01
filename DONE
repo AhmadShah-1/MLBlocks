@@ -1,0 +1,84 @@
+
+# FIRST
+1. Users should be able to right click, and have an extra selection "Custom Block"
+- Custom Block
+- Cut
+- Copy
+- Paste
+
+2. Remove the Preview section, as you already have a scrollable element where users can view/edit
+- Make this editable element show 10 lines
+
+3. If a block ONLY consists of a function 
+- When the user connects the block to another block, update the block (the function one) "Output" header to be the output type of the function, similiar to how vscode shows the input/output of a function
+
+4. I want the Block Palette to have a nested UI 
+- Show Header Titles, when clicked they navigate to the content of that pack
+For example
+Basic Python
+Images
+Tensorflow
+Pytorch
+Linear Regression Models
+Neural Networks
+CNN
+
+and when a user clicks one of these categories they will be able to see all relevant sections for that item, and after selection a section, they can view all blocks associated with it
+
+5. I want to change the way you interpret new code blocks
+Currently it seems that they are stored as JSON within the builtins folder
+
+I want to change it to be more ordered and quickly reproduceable
+I created a "Categories" folder with several other category folders within it (Each are number labelled to indicate order)
+Each category folder has a list of .py files that dictate the different sections for that category (Each are number labelled to indicate order)
+in each .py file the first line has a comment 
+# Category: _______
+the value for category should be the name for the subsection
+in the file there are several code blocks, the start and end of each code block is specified by
+# START
+and
+# END
+the next two lines after the start are
+# Title: ______
+# Output: _____
+the value for title should be the name of that block 
+and the output value should be the value for the output
+
+after the output, and until the end of the file, is the actual python block code
+I have already created some examples, look over how i did it, implement more examples for the rest, and adjust the code accordingly
+
+Remember that the use should be able to navigate between category, and then section, and then select blocks that belong to that section (include a back button)
+
+Also if easily possible, include a search button at the top, that performs a fuzzy search for related blocks, and navigates the user to that section, and focus on the block
+
+6. Can we also make the drag animation more interactable, so the user can clearly see it while it is being dragged, currently they click+hold and place somewhere, seemingly teleporting
+
+7. Can we make the input a green circle, and the output a red circle so it is clearer what goes where
+
+8. Add a arrow incremently on the wires so the user can understand which way the data is flowing, as of right now its just a wire and unclear where the wire is going, and make the wire slightly thicker, just a little bit
+
+
+
+# SECOND
+1. When the user double clicks an existing block or wire (I assume it was programmed to be anywhere, but the feature ended up being like this), it creates a new block, remove this feature
+
+2. Users should have a button to minimize the block palette, and a button to minimize the execution order
+
+3. You did not properly implement the dragging feature, the blocks are still being teleported, the user cannot see the block being dragged by their cursor
+
+4. Although I did specify that each block should show 10 lines, I did not mean always, it should show up-to 10 lines, if a block contains only 5 lines of code, minimize the block to fit that size, if a block has 50 lines, show only 10 lines, allowing them to use the scroll bar to navigate the code and make edits
+
+5. The color of the components and text, should follow the theme of the users environment, however if there is some issue with using the theme, default to the current
+
+6. The user should be able to user the "Cut" feature, to delete a wire connection
+
+7. A new folder with new timestamp shouldn't be created, it should just ever create one folder, and at every update, overwrites the existing folder
+
+8. There should also be support for undo/redo (ctrl z, ctrl y), that should restore the previous action, if within a block (it should reverse the changes made in that block), if nothing is selected, it should restore deleted blocks
+
+9. When I try highlighting code within the view, it highlights it, but also drags the entire block to the where the cursor ends
+
+10. Is it possible, that each of the blocks can have a terminal, just like jupyter notebook, where the output of that block will be shown there:
+the terminal should be present below the code (should be able to display terminal outputs, but also graph outputs like matplotlib, etc)
+
+11. Also it does not seem like i can paste content within blocks in the view, this should be a feature
