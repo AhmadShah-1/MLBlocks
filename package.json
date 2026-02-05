@@ -2,14 +2,31 @@
   "name": "mlblocks",
   "displayName": "MLBlocks",
   "description": "Visual ML block canvas for assembling Python ML projects.",
-  "version": "0.0.1",
-  "publisher": "ahmad",
+  "version": "0.0.2",
+  "publisher": "SyedAhmadShah",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "machine-learning",
+    "python",
+    "visual-programming",
+    "ml",
+    "blocks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AhmadShah-1/MLBlocks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AhmadShah-1/MLBlocks.git/issues"
+  },
+  "homepage": "https://github.com/AhmadShah-1/MLBlocks#readme",
+  "license": "MIT",
+  "icon": "media/icon.png",
   "activationEvents": [
     "onCommand:mlblocks.openCanvas",
     "onCommand:mlblocks.convert",
@@ -46,12 +63,14 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "build:webview": "npm --prefix src/webview/app run build",
-    "build": "npm run compile && npm run build:webview"
+    "build": "npm run compile && npm run build:webview",
+    "package": "vsce package",
+    "publish": "vsce publish"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@vscode/vsce": "^2.22.0"
   }
 }
-

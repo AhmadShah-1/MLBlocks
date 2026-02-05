@@ -1,7 +1,17 @@
-**/src/webview/app/node_modules/**
-**/src/webview/app/dist/**
-**/src/webview/app/.vite/**
-**/.DS_Store
-**/node_modules/**
-**/dist/**
+# Source files (exclude)
+src/**
+!src/webview/build/**
+!src/core/blocks/Categories/**
+!src/core/blocks/builtins/**
+*.ts
+*.tsx
+*.map
 
+# Development files
+.vscode/**
+.vscode-test/**
+**/node_modules/**
+**/.git/**
+**/.DS_Store
+**/TODO
+**/DONE

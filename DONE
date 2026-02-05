@@ -1,3 +1,49 @@
+To Publish:
+Step 1: Install VS Code Extension Manager
+npm install -g @vscode/vsce
+Step 2: Get a Personal Access Token
+Go to https://dev.azure.com
+Sign in with your Microsoft account
+Create an organization (if needed)
+Go to User Settings → Personal Access Tokens
+Create a new token with Marketplace (Manage) permissions
+Save the token securely
+Step 3: Create a Publisher
+vsce create-publisher ahmad
+Or create it at https://marketplace.visualstudio.com/manage
+Step 4: Build your extension
+npm run build
+This compiles TypeScript and builds the webview.
+Step 5: Package the extension (test first)
+vsce package
+This creates a .vsix file you can test locally:
+In VS Code: Extensions → ... → Install from VSIX
+Step 6: Publish to Marketplace
+vsce publish
+You'll be prompted for your Personal Access Token.
+Step 7: Verify
+After publishing, check:
+https://marketplace.visualstudio.com/vscode
+Search for "MLBlocks"
+
+
+Notable paths* Extension: src/extension/extension.ts, src/extension/commands/*, src/extension/bridge/*
+
+* Core logic: src/core/schema/*, src/core/graph/*, src/core/codegen/*
+* Webview app: src/webview/app/*, src/webview/app/src/*
+* Block packs: src/core/blocks/builtins/*.json
+
+## Development
+
+1. Install dependencies for the extension root:
+   - `npm install`
+2. Install dependencies for the webview app:
+   - `npm --prefix src/webview/app install`
+3. Build:
+   - `npm run build`
+4. Run the extension:
+   - Press `F5` in VSCode.
+   
 
 # FIRST
 1. Users should be able to right click, and have an extra selection "Custom Block"
